@@ -2167,6 +2167,18 @@
       "sampleQuery": "zootopia",
       "updated": "2026-10-19",
       "badge": "new"
+    },
+    {
+      "id": "yfsp-bangumi",
+      "name": "YFSP-Bangumi",
+      "iconUrl": "https://raw.githubusercontent.com/SakuraYuki56/Sora-Modules/feature/yfsp-bangumi/yfsp/icon.png",
+      "category": "movies/shows/anime",
+      "branch": "feature/yfsp-bangumi",
+      "manifestUrl": "https://raw.githubusercontent.com/SakuraYuki56/Sora-Modules/feature/yfsp-bangumi/yfsp-bangumi/yfsp-bangumi.json",
+      "sampleQuery": "葬送的芙莉莲",
+      "updated": "2026-11-02",
+      "needs_review": true,
+      "note": "Initial fork module. Bangumi metadata matching is strict exact-title matching to avoid cross-season mislabeling; YFSP remains the playback provider. Live Shirox runtime validation is pending."
     }
   ]
 }
