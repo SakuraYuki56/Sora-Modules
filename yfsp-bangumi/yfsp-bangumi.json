@@ -1,0 +1,32 @@
+{
+  "sourceName": "YFSP-Bangumi",
+  "iconUrl": "https://raw.githubusercontent.com/SakuraYuki56/Sora-Modules/feature/yfsp-bangumi/yfsp/icon.png",
+  "author": {
+    "name": "SakuraYuki56",
+    "icon": "https://avatars.githubusercontent.com/u/38687657?v=4",
+    "url": "https://github.com/SakuraYuki56"
+  },
+  "description": "YFSP (yfsp.tv) module with Bangumi Chinese-title metadata assistance. Bangumi improves title and poster matching; YFSP remains responsible for details, episodes and HLS playback. Falls back to native YFSP search when Bangumi is unavailable.",
+  "version": "1.0.0",
+  "language": "Chinese (SUB)",
+  "streamType": "HLS",
+  "quality": "576p",
+  "baseUrl": "https://www.yfsp.tv/",
+  "searchBaseUrl": "https://www.yfsp.tv/search/%s",
+  "scriptUrl": "https://raw.githubusercontent.com/SakuraYuki56/Sora-Modules/feature/yfsp-bangumi/yfsp-bangumi/yfsp-bangumi.js",
+  "type": "movies/shows/anime",
+  "downloadSupport": true,
+  "combo": false,
+  "asyncJS": true,
+  "streamAsyncJS": false,
+  "softsub": false,
+  "supportsSora": true,
+  "supportsLuna": true,
+  "supportsShirox": true,
+  "supportsMojuru": false,
+  "supportsDartotsu": false,
+  "supportsAnymex": false,
+  "supportsTsumi": false,
+  "supportsHiyoku": false,
+  "supportsEclipse": true
+}
