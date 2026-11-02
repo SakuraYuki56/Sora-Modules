@@ -32,8 +32,9 @@ async function searchResults(keyword) {
         if (!query) return JSON.stringify([]);
 
         // Keep YFSP as the playback authority; Bangumi only enriches search metadata.
-        const results = await searchYFSP(query);
-        const subjects = await searchBangumiSubjects(query);
+        const initial = await Promise.all([searchYFSP(query), searchBangumiSubjects(query)]);
+        const results = initial[0];
+        const subjects = initial[1];
 
         for (let i = 0; i < results.length; i++) {
             const subject = matchBangumiSubject(results[i].title, subjects);
@@ -57,7 +58,7 @@ async function searchResults(keyword) {
             if (item && item.href) seen.set(item.href, item);
         }
 
-        for (const candidate of candidateQueries.slice(0, 8)) {
+        for (const candidate of candidateQueries.slice(0, 4)) {
             const candidateResults = await searchYFSP(candidate);
             for (const item of candidateResults) {
                 const subject = matchBangumiSubject(item.title, subjects);
@@ -73,7 +74,7 @@ async function searchResults(keyword) {
             }
         }
 
-        return JSON.stringify(Array.from(seen.values()));
+        return JSON.stringify(Array.from(seen.values()).slice(0, 60));
     } catch (error) {
         console.log('[YFSP-Bangumi] Search error: ' + error);
         return JSON.stringify([]);
@@ -148,25 +149,36 @@ async function searchBangumiSubjects(keyword) {
 function normalizeSearchTitle(value) {
     return String(value || '')
         .toLowerCase()
-        .replace(/[\\s·・:：,，.。!！?？（）()【】\\[\\]「」『』\\-—_]/g, '');
+        .replace(/[\s·・:：,，.。!！?？（）()【】\[\]「」『』\-—_]/g, '');
 }
 
 function matchBangumiSubject(title, subjects) {
     const normalized = normalizeSearchTitle(title);
     if (!normalized) return null;
 
-    const matches = [];
+    const exact = [];
     for (const subject of subjects || []) {
         const names = [subject && subject.name_cn, subject && subject.name]
             .map(normalizeSearchTitle)
             .filter(Boolean);
-        if (names.includes(normalized)) matches.push(subject);
+        if (names.includes(normalized)) exact.push(subject);
     }
+    if (exact.length === 1) return exact[0];
+    if (exact.length > 1) return null;
 
-    // If multiple seasons/entries share the same title, do not guess.
-    return matches.length === 1 ? matches[0] : null;
+    // Allow harmless suffixes (year/season labels), but only when the match
+    // remains unique. This avoids guessing between similarly named seasons.
+    const partial = [];
+    for (const subject of subjects || []) {
+        const names = [subject && subject.name_cn, subject && subject.name]
+            .map(normalizeSearchTitle)
+            .filter(name => name.length >= 4);
+        if (names.some(name => normalized.indexOf(name) >= 0 || name.indexOf(normalized) >= 0)) {
+            partial.push(subject);
+        }
+    }
+    return partial.length === 1 ? partial[0] : null;
 }
-
 function applyBangumiMetadata(item, subject) {
     const images = subject && subject.images ? subject.images : {};
     return {
