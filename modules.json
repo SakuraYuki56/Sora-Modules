@@ -2178,7 +2178,7 @@
       "sampleQuery": "葬送的芙莉莲",
       "updated": "2026-11-02",
       "needs_review": true,
-      "note": "Initial fork module. Bangumi metadata matching is strict exact-title matching to avoid cross-season mislabeling; YFSP remains the playback provider. Live Shirox runtime validation is pending."
+      "note": "Initial fork module. Bangumi metadata matching uses normalized exact-title matching plus unique partial matches for harmless suffixes; ambiguous multi-season matches are left unchanged. YFSP remains the playback provider. Live Shirox runtime validation is pending."
     }
   ]
 }
